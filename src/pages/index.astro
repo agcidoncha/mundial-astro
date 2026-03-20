@@ -1,11 +1,86 @@
 ---
-import Welcome from "../components/Welcome.astro";
-import Layout from "../layouts/Layout.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { groups } from "../data/groups.js";
 ---
 
-<Layout>
-  <h1>Proyecto Mundial ⚽</h1>
-</Layout>
+<h1>Proyecto Mundial ⚽🔥</h1>
+
+<div class="groups">
+  {
+    groups.map((group) => (
+      <div class="card">
+        <h2>{group.name}</h2>
+
+        <ul>
+          {group.teams.map((team) => (
+            <li>
+              <div class="team">
+                <img src={team.logo} alt={team.name} />
+                <span>{team.name}</span>
+              </div>
+              <span>{team.points} pts</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    padding: 20px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  .groups {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    background: #e5e7eb;
+    color: #111;
+    border-radius: 16px;
+    padding: 16px;
+    width: 250px;
+  }
+
+  .card h2 {
+    margin-bottom: 12px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  img {
+    width: 20px;
+  }
+</style>
