@@ -21,11 +21,23 @@ const { group } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{group.name}</title>
   </head>
-  <body>
-    <h1>{group.name}</h1>
 
-    <ul>
-      {group.teams.map((team) => <li>{team.name}</li>)}
-    </ul>
+  <body>
+    <main>
+      <a href="/">← Volver</a>
+
+      <h1>{group.name}</h1>
+
+      <ul>
+        {
+          (group?.teams ?? []).map((team) => (
+            <li>
+              <img src={team.logo} alt={team.name} width="30" />
+              {team.name}
+            </li>
+          ))
+        }
+      </ul>
+    </main>
   </body>
 </html>

@@ -13,18 +13,20 @@ import { groups } from "../data/groups.js";
     <main>
       {
         groups.map((group) => (
-          <section>
-            <h2>{group.name}</h2>
+          <a href={`/group/${group.name.toLowerCase().replace(" ", "-")}`}>
+            <section>
+              <h2>{group.name}</h2>
 
-            <ul>
-              {group.teams.map((team) => (
-                <li>
-                  <img src={team.logo} alt={team.name} width="30" />
-                  {team.name}
-                </li>
-              ))}
-            </ul>
-          </section>
+              <ul>
+                {group.teams.map((team) => (
+                  <li>
+                    <img src={team.logo} alt={team.name} width="30" />
+                    {team.name}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </a>
         ))
       }
     </main>
