@@ -1,59 +1,151 @@
 ---
-import { groups } from "../data/groups.js";
+const res = await fetch(
+  "https://v3.football.api-sports.io/teams?league=1&season=2022",
+  {
+    headers: {
+      "x-apisports-key": import.meta.env.API_FOOTBALL_KEY,
+    },
+  },
+);
+
+const data = await res.json();
+
+console.log(data);
+const teams = data.response;
+const groups = [];
+
+let groupIndex = 0;
+let currentGroup = { name: "Grupo A", teams: [] };
+
+teams.forEach((item, i) => {
+  currentGroup.teams.push({
+    name: item.team.name,
+    logo: item.team.logo,
+  });
+
+  if ((i + 1) % 4 === 0) {
+    groups.push(currentGroup);
+    groupIndex++;
+
+    currentGroup = {
+      name: "Grupo " + String.fromCharCode(65 + groupIndex),
+      teams: [],
+    };
+  }
+});
+console.log(teams);
 ---
 
-<h1>Proyecto Mundial ⚽🔥</h1>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyecto Mundial</title>
+  </head>
 
-<div class="groups">
-  {
-    groups.map((group) => (
-      <div class="card">
-        <h2>{group.name}</h2>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <p class="eyebrow">WORLD CUP</p>
+        <h1>Proyecto Mundial</h1>
+        <p class="subtitle">
+          Grupos del Mundial con diseño limpio, claro y elegante.
+        </p>
+        <section class="groups">
+          {
+            groups.map((group) => (
+              <article class="card">
+                <h2>{group.name}</h2>
 
-        <ul>
-          {group.teams.map((team) => (
-            <li>
-              <div class="team">
-                <img src={team.logo} alt={team.name} />
-                <span>{team.name}</span>
-              </div>
-              <span>{team.points} pts</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ))
-  }
-</div>
+                <ul>
+                  {group.teams.map((team) => (
+                    <li>
+                      <div class="team">
+                        <img src={team.logo} alt={team.name} />
+                        <span>{team.name}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))
+          }
+        </section>
+      </header>
+    </main>
+  </body>
+</html>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: white;
-    padding: 20px;
+  :global(body) {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #1d1d1f;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    color: #86868b;
   }
 
   h1 {
-    margin-bottom: 20px;
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .subtitle {
+    max-width: 620px;
+    margin: 14px auto 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #6e6e73;
   }
 
   .groups {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
   }
 
   .card {
-    background: #e5e7eb;
-    color: #111;
-    border-radius: 16px;
-    padding: 16px;
-    width: 250px;
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 24px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   }
 
   .card h2 {
-    margin-bottom: 12px;
+    margin: 0 0 18px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   ul {
@@ -66,8 +158,9 @@ import { groups } from "../data/groups.js";
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #ccc;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f2f2f2;
   }
 
   li:last-child {
@@ -77,10 +170,27 @@ import { groups } from "../data/groups.js";
   .team {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .team span {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #1d1d1f;
+  }
+
+  .points {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #86868b;
+    white-space: nowrap;
   }
 
   img {
-    width: 20px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 </style>
