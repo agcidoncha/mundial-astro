@@ -29,27 +29,31 @@ const groups = data.response[0].league.standings;
         <p class="subtitle">
           Grupos del Mundial con diseño limpio, claro y elegante.
         </p>
-        <section class="groups">
-          {
-            groups.map((group) => (
-              <article class="card">
-                <h2>{group[0].group}</h2>
-
-                <ul>
-                  {group.map((item) => (
-                    <li>
-                      <div class="team">
-                        <img src={item.team.logo} alt={item.team.name} />
-                        <span>{item.team.name}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))
-          }
-        </section>
       </header>
+
+      <section class="groups">
+        {
+          groups.map((group) => (
+            <a
+              href={`/group/group-${group[0].group.split(" ")[1].toLowerCase()}`}
+              class="card"
+            >
+              <h2>{group[0].group}</h2>
+
+              <ul>
+                {group.map((item) => (
+                  <li>
+                    <div class="team">
+                      <img src={item.team.logo} alt={item.team.name} />
+                      <span>{item.team.name}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </a>
+          ))
+        }
+      </section>
     </main>
   </body>
 </html>
@@ -124,6 +128,10 @@ const groups = data.response[0].league.standings;
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
   ul {
