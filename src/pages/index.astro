@@ -1,6 +1,6 @@
 ---
 const res = await fetch(
-  "https://v3.football.api-sports.io/teams?league=1&season=2022",
+  "https://v3.football.api-sports.io/standings?league=1&season=2022",
   {
     headers: {
       "x-apisports-key": import.meta.env.API_FOOTBALL_KEY,
@@ -10,30 +10,8 @@ const res = await fetch(
 
 const data = await res.json();
 
-console.log(data);
-const teams = data.response;
-const groups = [];
-
-let groupIndex = 0;
-let currentGroup = { name: "Grupo A", teams: [] };
-
-teams.forEach((item, i) => {
-  currentGroup.teams.push({
-    name: item.team.name,
-    logo: item.team.logo,
-  });
-
-  if ((i + 1) % 4 === 0) {
-    groups.push(currentGroup);
-    groupIndex++;
-
-    currentGroup = {
-      name: "Grupo " + String.fromCharCode(65 + groupIndex),
-      teams: [],
-    };
-  }
-});
-console.log(teams);
+console.log(JSON.stringify(data, null, 2));
+const groups = data.response[0].league.standings;
 ---
 
 <html lang="es">
@@ -55,14 +33,14 @@ console.log(teams);
           {
             groups.map((group) => (
               <article class="card">
-                <h2>{group.name}</h2>
+                <h2>{group[0].group}</h2>
 
                 <ul>
-                  {group.teams.map((team) => (
+                  {group.map((item) => (
                     <li>
                       <div class="team">
-                        <img src={team.logo} alt={team.name} />
-                        <span>{team.name}</span>
+                        <img src={item.team.logo} alt={item.team.name} />
+                        <span>{item.team.name}</span>
                       </div>
                     </li>
                   ))}
