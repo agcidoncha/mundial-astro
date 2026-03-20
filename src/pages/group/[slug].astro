@@ -1,0 +1,31 @@
+---
+import { groups } from "../../data/groups.js";
+
+export function getStaticPaths() {
+  return groups.map((group) => ({
+    params: {
+      slug: group.name.toLowerCase().replace(" ", "-"),
+    },
+    props: {
+      group,
+    },
+  }));
+}
+
+const { group } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{group.name}</title>
+  </head>
+  <body>
+    <h1>{group.name}</h1>
+
+    <ul>
+      {group.teams.map((team) => <li>{team.name}</li>)}
+    </ul>
+  </body>
+</html>
